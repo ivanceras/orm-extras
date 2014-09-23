@@ -276,3 +276,5 @@
 /target/
 /target/
 /target/
+/.classpath
+/.project
