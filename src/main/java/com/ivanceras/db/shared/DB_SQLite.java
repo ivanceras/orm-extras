@@ -358,12 +358,6 @@ public class DB_SQLite extends DB_Rdbms implements IDatabase {
 		return null;
 	}
 
-	@Override
-	protected String getEquivalentDBDataType(String javaDataType)
-			throws DataTypeException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	protected Object getEquivalentDBObject(Object record) {
@@ -405,6 +399,12 @@ public class DB_SQLite extends DB_Rdbms implements IDatabase {
 
 	@Override
 	public void search(Query query, String keyword) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void correctDataTypes(DAO[] daoList, ModelDef model) {
 		// TODO Auto-generated method stub
 		
 	}

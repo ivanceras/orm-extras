@@ -569,6 +569,12 @@ public class DB_Mongo extends DB_Odbms implements IDatabase{
 		
 	}
 
+	@Override
+	public void correctDataTypes(DAO[] daoList, ModelDef model) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	//	private static void basicQuery(){
 	//		 BasicDBObject searchQuery = new BasicDBObject();
 	//		 searchQuery.put("id", 8888);

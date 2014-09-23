@@ -363,5 +363,11 @@ public class DB_Cassandra extends DB_Jdbc implements IDatabase {
 		return null;
 	}
 
+	@Override
+	public void correctDataTypes(DAO[] daoList, ModelDef model) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

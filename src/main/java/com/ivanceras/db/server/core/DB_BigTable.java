@@ -817,5 +817,11 @@ public class DB_BigTable extends DB_Odbms implements IDatabase{
 		
 	}
 
+	@Override
+	public void correctDataTypes(DAO[] daoList, ModelDef model) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

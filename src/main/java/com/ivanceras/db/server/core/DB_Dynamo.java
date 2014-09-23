@@ -569,5 +569,11 @@ public class DB_Dynamo  implements IDatabase{
 		return null;
 	}
 
+	@Override
+	public void correctDataTypes(DAO[] daoList, ModelDef model) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }
