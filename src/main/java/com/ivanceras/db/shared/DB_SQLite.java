@@ -20,7 +20,6 @@ import com.ivanceras.db.api.QueryBreakdown;
 import com.ivanceras.db.api.SchemaTable;
 import com.ivanceras.db.api.WindowFunction;
 import com.ivanceras.db.model.ModelMetaData;
-import com.ivanceras.db.shared.datatype.GenericDataType;
 import com.ivanceras.db.shared.exception.DataTypeException;
 import com.ivanceras.db.shared.exception.DatabaseException;
 import com.ivanceras.fluent.sql.SQL;

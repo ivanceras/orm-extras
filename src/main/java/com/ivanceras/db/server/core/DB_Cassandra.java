@@ -22,8 +22,8 @@ import com.ivanceras.db.api.WindowFunction;
 import com.ivanceras.db.model.ModelMetaData;
 import com.ivanceras.db.shared.DAO;
 import com.ivanceras.db.shared.Filter;
-import com.ivanceras.db.shared.datatype.DBDataType;
-import com.ivanceras.db.shared.datatype.GenericDataType;
+import com.ivanceras.db.shared.datatype.DataTypeDB;
+import com.ivanceras.db.shared.datatype.DataTypeGeneric;
 import com.ivanceras.db.shared.exception.DBConnectionException;
 import com.ivanceras.db.shared.exception.DatabaseException;
 import com.ivanceras.fluent.sql.SQL;
@@ -168,7 +168,7 @@ public class DB_Cassandra extends DB_Jdbc implements IDatabase {
 		if(dataTypes != null){
 			dataType = dataTypes[dtIndex];
 		}
-		if(dataType != null && dataType.equals(GenericDataType.DATE)){
+		if(dataType != null && dataType.equals(DataTypeGeneric.DATE)){
 			try{
 				Date date = new Date(((Timestamp)record).getTime());
 				return date;
@@ -178,7 +178,7 @@ public class DB_Cassandra extends DB_Jdbc implements IDatabase {
 				return date;
 			}
 		}
-		if(dataType != null && dataType.equals(GenericDataType.LONG) && record.getClass().equals(BigDecimal.class)){
+		if(dataType != null && dataType.equals(DataTypeGeneric.LONG) && record.getClass().equals(BigDecimal.class)){
 			return ((BigDecimal)record).longValue();
 		}
 		else{
@@ -188,20 +188,20 @@ public class DB_Cassandra extends DB_Jdbc implements IDatabase {
 
 	@Override
 	public String getEquivalentDBDataType(String genDataType){
-		if(genDataType.equals(GenericDataType.DATE)){
-			return DBDataType.TIMESTAMP;
+		if(genDataType.equals(DataTypeGeneric.DATE)){
+			return DataTypeDB.TIMESTAMP;
 		}
-		else if(genDataType.equals(GenericDataType.TIMESTAMP)){
-			return DBDataType.TIMESTAMP;
+		else if(genDataType.equals(DataTypeGeneric.TIMESTAMP)){
+			return DataTypeDB.TIMESTAMP;
 		}
-		else if(genDataType.equals(GenericDataType.STRING)){
-			return DBDataType.VARCHAR;
+		else if(genDataType.equals(DataTypeGeneric.STRING)){
+			return DataTypeDB.VARCHAR;
 		}
-		else if(genDataType.equals(GenericDataType.INTEGER)){
-			return DBDataType.INT;
+		else if(genDataType.equals(DataTypeGeneric.INTEGER)){
+			return DataTypeDB.INT;
 		}
 		else{
-			return DBDataType.fromGenericType(genDataType);
+			return DataTypeDB.fromGenericType(genDataType);
 		}
 	}
 

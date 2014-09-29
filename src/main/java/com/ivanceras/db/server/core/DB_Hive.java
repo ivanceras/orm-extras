@@ -531,5 +531,11 @@ public class DB_Hive extends DB_Jdbc implements IDatabase {
 		
 	}
 
+	@Override
+	protected Object getEquivalentDBObject(Object record) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

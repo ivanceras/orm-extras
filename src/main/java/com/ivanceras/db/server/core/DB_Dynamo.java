@@ -43,7 +43,7 @@ import com.ivanceras.db.date.DateFunctions;
 import com.ivanceras.db.model.ModelMetaData;
 import com.ivanceras.db.shared.DAO;
 import com.ivanceras.db.shared.Filter;
-import com.ivanceras.db.shared.datatype.GenericDataType;
+import com.ivanceras.db.shared.datatype.DataTypeGeneric;
 import com.ivanceras.db.shared.exception.DatabaseException;
 import com.ivanceras.fluent.sql.SQL;
 
@@ -211,25 +211,25 @@ public class DB_Dynamo  implements IDatabase{
 	}
 
 	private String getType(String dt){
-		if(dt.equals(GenericDataType.STRING)){
+		if(dt.equals(DataTypeGeneric.STRING)){
 			return "S";
 		}
-		else if(dt.equals(GenericDataType.INTEGER)){
+		else if(dt.equals(DataTypeGeneric.INTEGER)){
 			return "N";
 		}
-		else if(dt.equals(GenericDataType.BIGINTEGER)){
+		else if(dt.equals(DataTypeGeneric.BIGINTEGER)){
 			return "N";
 		}
-		else if(dt.equals(GenericDataType.FLOAT)){
+		else if(dt.equals(DataTypeGeneric.FLOAT)){
 			return "N";
 		}
-		else if(dt.equals(GenericDataType.DOUBLE)){
+		else if(dt.equals(DataTypeGeneric.DOUBLE)){
 			return "N";
 		}
-		else if(dt.equals(GenericDataType.BIGDECIMAL)){
+		else if(dt.equals(DataTypeGeneric.BIGDECIMAL)){
 			return "N";
 		}
-		else if(dt.equals(GenericDataType.DATE)){
+		else if(dt.equals(DataTypeGeneric.DATE)){
 			return "S";
 		}
 		else{
@@ -237,25 +237,25 @@ public class DB_Dynamo  implements IDatabase{
 		}
 	}
 	private Object convertObject(String dt, AttributeValue value){
-		if(dt.equals(GenericDataType.STRING)){
+		if(dt.equals(DataTypeGeneric.STRING)){
 			return value.getS();
 		}
-		else if(dt.equals(GenericDataType.INTEGER)){
+		else if(dt.equals(DataTypeGeneric.INTEGER)){
 			return Integer.parseInt(value.getN());
 		}
-		else if(dt.equals(GenericDataType.BIGINTEGER)){
+		else if(dt.equals(DataTypeGeneric.BIGINTEGER)){
 			return BigInteger.valueOf(Long.parseLong(value.getN()));
 		}
-		else if(dt.equals(GenericDataType.FLOAT)){
+		else if(dt.equals(DataTypeGeneric.FLOAT)){
 			return Float.parseFloat(value.getN());
 		}
-		else if(dt.equals(GenericDataType.DOUBLE)){
+		else if(dt.equals(DataTypeGeneric.DOUBLE)){
 			return Double.parseDouble(value.getN());
 		}
-		else if(dt.equals(GenericDataType.BIGDECIMAL)){
+		else if(dt.equals(DataTypeGeneric.BIGDECIMAL)){
 			return BigDecimal.valueOf(Long.parseLong(value.getN()));
 		}
-		else if(dt.equals(GenericDataType.DATE)){
+		else if(dt.equals(DataTypeGeneric.DATE)){
 			try {
 				return DateFunctions.getDate(value.getS());
 			} catch (ParseException e) {
@@ -473,32 +473,32 @@ public class DB_Dynamo  implements IDatabase{
 	}
 
 	private AttributeValue toAttributeValue(String dt, Object value){
-		if(dt.equals(GenericDataType.STRING)){
+		if(dt.equals(DataTypeGeneric.STRING)){
 			String daoValue = (String) value;
 			AttributeValue itemValue = new AttributeValue().withS(daoValue);
 			return itemValue;
 		}
-		else if(dt.equals(GenericDataType.INTEGER)){
+		else if(dt.equals(DataTypeGeneric.INTEGER)){
 			String daoValue = Integer.toString((Integer) value);
 			AttributeValue itemValue = new AttributeValue().withN(daoValue);
 			return itemValue;
 		}
-		else if(dt.equals(GenericDataType.LONG)){
+		else if(dt.equals(DataTypeGeneric.LONG)){
 			String daoValue = Long.toString((Long) value);
 			AttributeValue itemValue = new AttributeValue().withN(daoValue);
 			return itemValue;
 		}
-		else if(dt.equals(GenericDataType.FLOAT)){
+		else if(dt.equals(DataTypeGeneric.FLOAT)){
 			String daoValue = Float.toString((Float) value);
 			AttributeValue itemValue = new AttributeValue().withN(daoValue);
 			return itemValue;
 		}
-		else if(dt.equals(GenericDataType.BIGDECIMAL)){
+		else if(dt.equals(DataTypeGeneric.BIGDECIMAL)){
 			String daoValue = ((BigDecimal) value).toString();
 			AttributeValue itemValue = new AttributeValue().withN(daoValue);
 			return itemValue;
 		}
-		else if(dt.equals(GenericDataType.DATE)){
+		else if(dt.equals(DataTypeGeneric.DATE)){
 			Date daoValue = (Date) value;
 			String daoString = DateFunctions.getAsString(daoValue);
 			AttributeValue itemValue = new AttributeValue().withS(daoString);

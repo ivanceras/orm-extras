@@ -47,7 +47,7 @@ import com.ivanceras.db.model.ModelMetaData;
 import com.ivanceras.db.shared.DAO;
 import com.ivanceras.db.shared.Filter;
 import com.ivanceras.db.shared.Order;
-import com.ivanceras.db.shared.datatype.GenericDataType;
+import com.ivanceras.db.shared.datatype.DataTypeGeneric;
 import com.ivanceras.db.shared.exception.DataTypeException;
 import com.ivanceras.db.shared.exception.DatabaseException;
 import com.ivanceras.fluent.sql.SQL;
@@ -512,19 +512,19 @@ public class DB_BigTable extends DB_Odbms implements IDatabase{
 
 	public String getEquivalentGeneralDataType(String googledt){
 		if(googledt.equals(STRING)){
-			return GenericDataType.STRING;
+			return DataTypeGeneric.STRING;
 		}
 		else if(googledt.equals(INT64)){
-			return GenericDataType.INTEGER;
+			return DataTypeGeneric.INTEGER;
 		}
 		else if(googledt.equals(DOUBLE)){
-			return GenericDataType.DOUBLE;
+			return DataTypeGeneric.DOUBLE;
 		}
 		else if(googledt.equals(BOOLEAN)){
-			return GenericDataType.BOOLEAN;
+			return DataTypeGeneric.BOOLEAN;
 		}
 		else if(googledt.equals(NULL)){
-			return GenericDataType.STRING;
+			return DataTypeGeneric.STRING;
 		}
 		else{
 			try {
@@ -606,30 +606,30 @@ public class DB_BigTable extends DB_Odbms implements IDatabase{
 		if(value == null){
 			return null;
 		}
-		if(dataType.equals(GenericDataType.STRING) && value != null && value.getClass().equals(Text.class)){
+		if(dataType.equals(DataTypeGeneric.STRING) && value != null && value.getClass().equals(Text.class)){
 			String strvalue = ((Text)value).getValue();
 			return strvalue;
 		}
-		else if(value instanceof Long && dataType.equals(GenericDataType.INTEGER)){
+		else if(value instanceof Long && dataType.equals(DataTypeGeneric.INTEGER)){
 			return Integer.parseInt(value.toString());
 		}
-		else if(dataType.equals(GenericDataType.INTEGER)){
+		else if(dataType.equals(DataTypeGeneric.INTEGER)){
 			return value;
 //			return Integer.valueOf(value.toString());//coud be long in the database
 		}
-		else if(dataType.equals(GenericDataType.TIMESTAMP)){
+		else if(dataType.equals(DataTypeGeneric.TIMESTAMP)){
 			Date date = new Date();
 			date.setTime(((Timestamp)value).getTime());
 			return date;
 		}
-		else if(dataType.equals(GenericDataType.BIGDECIMAL)){
+		else if(dataType.equals(DataTypeGeneric.BIGDECIMAL)){
 			BigDecimal bdvalue = new BigDecimal((Double)value);
 			return bdvalue;
 		}
-		else if(dataType.equals(GenericDataType.BIGINTEGER)){
+		else if(dataType.equals(DataTypeGeneric.BIGINTEGER)){
 			return (BigInteger) value;
 		}
-		else if(dataType.equals(GenericDataType.FLOAT)){
+		else if(dataType.equals(DataTypeGeneric.FLOAT)){
 			return Float.parseFloat(value.toString());
 		}
 		else{
