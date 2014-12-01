@@ -303,19 +303,19 @@ public class DB_Mongo extends DB_Odbms implements IDatabase{
 		return false;
 	}
 
-	@Override
-	public ModelDef getModelMetaData(String schema, String tableName)
-			throws DatabaseException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public ModelDef getModelMetaData(String schema, String tableName)
+//			throws DatabaseException {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
-	@Override
-	public SchemaTable[] getTableNames(String schema, String tablePattern, String[] includedSchema)
-			throws DatabaseException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public SchemaTable[] getTableNames(String schema, String tablePattern, String[] includedSchema)
+//			throws DatabaseException {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	@Override
 	public boolean createSchema(String schema) throws DatabaseException {
@@ -471,12 +471,12 @@ public class DB_Mongo extends DB_Odbms implements IDatabase{
 	}
 
 
-	@Override
-	public Map<String, String> getTableColumnComments(String tableName,
-			String schema) throws DatabaseException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public Map<String, String> getTableColumnComments(String tableName,
+//			String schema) throws DatabaseException {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	@Override
 	public String getTableComment(String tableName, String schema)
@@ -550,11 +550,11 @@ public class DB_Mongo extends DB_Odbms implements IDatabase{
 		return null;
 	}
 
-	@Override
-	public String getTableComment(String table) throws DatabaseException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public String getTableComment(String table) throws DatabaseException {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	@Override
 	public DAO insert(DAO dao, ModelMetaData meta, ModelDef model, Query query)
@@ -573,6 +573,20 @@ public class DB_Mongo extends DB_Odbms implements IDatabase{
 	public void correctDataTypes(DAO[] daoList, ModelDef model) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public boolean setPrimaryConstraint(ModelDef model)
+			throws DatabaseException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public DAO[] select(String sql, Object[] parameters)
+			throws DatabaseException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	//	private static void basicQuery(){

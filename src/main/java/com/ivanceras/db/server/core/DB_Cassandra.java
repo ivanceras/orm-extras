@@ -16,7 +16,6 @@ import com.ivanceras.db.api.DeclaredQuery;
 import com.ivanceras.db.api.IDatabase;
 import com.ivanceras.db.api.ModelDef;
 import com.ivanceras.db.api.Query;
-import com.ivanceras.db.api.QueryBreakdown;
 import com.ivanceras.db.api.SchemaTable;
 import com.ivanceras.db.api.WindowFunction;
 import com.ivanceras.db.model.ModelMetaData;
@@ -34,12 +33,12 @@ public class DB_Cassandra extends DB_Jdbc implements IDatabase {
 		super(config);
 	}
 
-	@Override
-	public SchemaTable[] getTableNames(String schema, String tablePattern,
-			String[] includedSchema) throws DatabaseException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public SchemaTable[] getTableNames(String schema, String tablePattern,
+//			String[] includedSchema) throws DatabaseException {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	@Override
 	public long writeToBlob(byte[] buf) throws DatabaseException {
@@ -78,12 +77,12 @@ public class DB_Cassandra extends DB_Jdbc implements IDatabase {
 		return null;
 	}
 
-	@Override
-	public Map<String, String> getTableColumnComments(String tableName,
-			String schema) throws DatabaseException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public Map<String, String> getTableColumnComments(String tableName,
+//			String schema) throws DatabaseException {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	@Override
 	public String getTableComment(String tableName, String schema)
@@ -344,11 +343,11 @@ public class DB_Cassandra extends DB_Jdbc implements IDatabase {
 		return false;
 	}
 
-	@Override
-	public String getTableComment(String table) throws DatabaseException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public String getTableComment(String table) throws DatabaseException {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	@Override
 	protected Object getEquivalentJavaObject(Object record) {

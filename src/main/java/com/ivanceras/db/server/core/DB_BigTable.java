@@ -113,42 +113,42 @@ public class DB_BigTable extends DB_Odbms implements IDatabase{
 		return null;
 	}
 	
-	/**
-	 * Get the model names that refer this entity as parent, to be used in the hasMany field
-	 * @param modelName
-	 * @return
-	 * @throws DatabaseException 
-	 */
-	private String[] getChildModelNames(String modelName) throws DatabaseException{
-		if(entityRelationshipd == null){
-			extractEntityRelation();
-		}
-		if(entityRelationshipd.containsKey(modelName)){
-			Set<String> childEntities = entityRelationshipd.get(modelName);
-			if(childEntities != null && childEntities.size() > 0){
-				return childEntities.toArray(new String[childEntities.size()]);
-			}
-		}
-		return null;
-	}
+//	/**
+//	 * Get the model names that refer this entity as parent, to be used in the hasMany field
+//	 * @param modelName
+//	 * @return
+//	 * @throws DatabaseException 
+//	 */
+//	private String[] getChildModelNames(String modelName) throws DatabaseException{
+//		if(entityRelationshipd == null){
+//			extractEntityRelation();
+//		}
+//		if(entityRelationshipd.containsKey(modelName)){
+//			Set<String> childEntities = entityRelationshipd.get(modelName);
+//			if(childEntities != null && childEntities.size() > 0){
+//				return childEntities.toArray(new String[childEntities.size()]);
+//			}
+//		}
+//		return null;
+//	}
 	
 	HashMap<String, Set<String>> entityRelationshipd = null;
 	
-	private void extractEntityRelation() throws DatabaseException{
-		entityRelationshipd = new HashMap<String, Set<String>>();
-		SchemaTable[] schTables = getTableNames(null, null, null);
-		for(SchemaTable sch : schTables){
-			String parentModel = getParentModelName(sch.getTableName());
-			if(entityRelationshipd.containsKey(parentModel)){
-				Set<String> child = entityRelationshipd.get(parentModel);
-				child.add(sch.getTableName());
-			}
-			else{
-				Set<String> emptySet = new HashSet<String>();
-				entityRelationshipd.put(parentModel, emptySet);
-			}
-		}
-	}
+//	private void extractEntityRelation() throws DatabaseException{
+//		entityRelationshipd = new HashMap<String, Set<String>>();
+//		SchemaTable[] schTables = getTableNames(null, null, null);
+//		for(SchemaTable sch : schTables){
+//			String parentModel = getParentModelName(sch.getTableName());
+//			if(entityRelationshipd.containsKey(parentModel)){
+//				Set<String> child = entityRelationshipd.get(parentModel);
+//				child.add(sch.getTableName());
+//			}
+//			else{
+//				Set<String> emptySet = new HashSet<String>();
+//				entityRelationshipd.put(parentModel, emptySet);
+//			}
+//		}
+//	}
 
 
 	@Override
@@ -423,67 +423,67 @@ public class DB_BigTable extends DB_Odbms implements IDatabase{
 
 
 
-	@Override
-	public ModelDef getModelMetaData(String schema, String tableName) throws DatabaseException {
-		boolean caseSensitive = true;
-		System.err.println("\t\tRetrieving meta data from Google Big ass table "+tableName);
-		getColumnDetails(schema, tableName);
-		ModelDef model = new ModelDef();
-		model.setNamespace(schema);
-		model.setModelName(tableName);
-		model.setCaseSensitive(caseSensitive);
-		ColumnDataType columns = getColumnDetails(schema, tableName);
-		model.setAttributes(columns.getColumns());
-		model.setDataTypes(columns.getDataTypes());
-		
-		String hasOne = getParentModelName(tableName);
-		String[] hasOnes = {hasOne};
-		model.setHasOne(hasOnes);
+//	@Override
+//	public ModelDef getModelMetaData(String schema, String tableName) throws DatabaseException {
+//		boolean caseSensitive = true;
+//		System.err.println("\t\tRetrieving meta data from Google Big ass table "+tableName);
+//		getColumnDetails(schema, tableName);
+//		ModelDef model = new ModelDef();
+//		model.setNamespace(schema);
+//		model.setModelName(tableName);
+//		model.setCaseSensitive(caseSensitive);
+//		ColumnDataType columns = getColumnDetails(schema, tableName);
+//		model.setAttributes(columns.getColumns());
+//		model.setDataTypes(columns.getDataTypes());
+//		
+//		String hasOne = getParentModelName(tableName);
+//		String[] hasOnes = {hasOne};
+//		model.setHasOne(hasOnes);
+//
+//		String[] hasMany = getChildModelNames(tableName);
+//		model.setHasMany(hasMany);
+//		
+//		System.out.println(model);
+//		return model;
+//	}
 
-		String[] hasMany = getChildModelNames(tableName);
-		model.setHasMany(hasMany);
-		
-		System.out.println(model);
-		return model;
-	}
+//	protected ColumnDataType getColumnDetails(String schema, String tableName) throws DatabaseException{
+//		List<String> attributeList = new ArrayList<String>();
+//		List<String> dataTypeList = new ArrayList<String>();
+//		Query q = new Query(Query.PROPERTY_METADATA_KIND);
+//		q.setAncestor(KeyFactory.createKey(Query.KIND_METADATA_KIND, tableName));
+//		for (Entity e : datastore.prepare(q).asIterable()) {
+//			String modelName = e.getKey().getParent().getName();
+//			String attribute = e.getKey().getName();
+//			System.out.println("Property "+modelName+": "+attribute);
+//
+//			String[] representations = representationsOf(datastore, tableName, attribute);
+//			String officialDataType = getOfficialDataType(representations);
+//			String genericDataType = getEquivalentGeneralDataType(officialDataType);
+//			attributeList.add(attribute);
+//			dataTypeList.add(genericDataType);
+//		}
+//		ColumnDataType columns = new ColumnDataType();
+//		columns.setColumns(attributeList.toArray(new String[attributeList.size()]));
+//		columns.setDataTypes(dataTypeList.toArray(new String[dataTypeList.size()]));
+//		return columns;
+//	}
 
-	protected ColumnDataType getColumnDetails(String schema, String tableName) throws DatabaseException{
-		List<String> attributeList = new ArrayList<String>();
-		List<String> dataTypeList = new ArrayList<String>();
-		Query q = new Query(Query.PROPERTY_METADATA_KIND);
-		q.setAncestor(KeyFactory.createKey(Query.KIND_METADATA_KIND, tableName));
-		for (Entity e : datastore.prepare(q).asIterable()) {
-			String modelName = e.getKey().getParent().getName();
-			String attribute = e.getKey().getName();
-			System.out.println("Property "+modelName+": "+attribute);
-
-			String[] representations = representationsOf(datastore, tableName, attribute);
-			String officialDataType = getOfficialDataType(representations);
-			String genericDataType = getEquivalentGeneralDataType(officialDataType);
-			attributeList.add(attribute);
-			dataTypeList.add(genericDataType);
-		}
-		ColumnDataType columns = new ColumnDataType();
-		columns.setColumns(attributeList.toArray(new String[attributeList.size()]));
-		columns.setDataTypes(dataTypeList.toArray(new String[dataTypeList.size()]));
-		return columns;
-	}
-
-	private String[] representationsOf(DatastoreService ds, String kind, String property) {
-		Query q = new Query(Query.PROPERTY_METADATA_KIND);
-		Key parent = KeyFactory.createKey(Query.KIND_METADATA_KIND, kind);
-		Key ancestor = KeyFactory.createKey(parent, Query.PROPERTY_METADATA_KIND, property);
-		q.setAncestor(ancestor);
-		Entity propInfo = ds.prepare(q).asSingleEntity();
-		Collection<String> representations = (Collection<String>) propInfo.getProperty("property_representation");
-
-		String[] dataTypes = new String[representations.size()];
-		int i = 0;
-		for(String dt : representations){
-			dataTypes[i++] = dt;
-		}
-		return dataTypes;
-	}
+//	private String[] representationsOf(DatastoreService ds, String kind, String property) {
+//		Query q = new Query(Query.PROPERTY_METADATA_KIND);
+//		Key parent = KeyFactory.createKey(Query.KIND_METADATA_KIND, kind);
+//		Key ancestor = KeyFactory.createKey(parent, Query.PROPERTY_METADATA_KIND, property);
+//		q.setAncestor(ancestor);
+//		Entity propInfo = ds.prepare(q).asSingleEntity();
+//		Collection<String> representations = (Collection<String>) propInfo.getProperty("property_representation");
+//
+//		String[] dataTypes = new String[representations.size()];
+//		int i = 0;
+//		for(String dt : representations){
+//			dataTypes[i++] = dt;
+//		}
+//		return dataTypes;
+//	}
 
 	public String getOfficialDataType(String[] representations){
 		String officialType = null;
@@ -537,22 +537,22 @@ public class DB_BigTable extends DB_Odbms implements IDatabase{
 	}
 
 
-	@Override
-	public SchemaTable[] getTableNames(String owner, String tablePattern, String[] includedSchema)
-	throws DatabaseException {
-		Query q = new Query(Query.KIND_METADATA_KIND);
-		System.err.println("Getting tables in BigTable");
-		PreparedQuery result = datastore.prepare(q);
-		List<SchemaTable> schemaTables = new ArrayList<SchemaTable>();
-		for(Entity e : result.asIterable()){
-			String namespace = e.getKey().getNamespace();
-			String modelName = e.getKey().getName();
-			System.out.println("entity: "+modelName);
-			SchemaTable schtable = new SchemaTable(namespace, modelName);
-			schemaTables.add(schtable);
-		}
-		return schemaTables.toArray(new SchemaTable[schemaTables.size()]);
-	}
+//	@Override
+//	public SchemaTable[] getTableNames(String owner, String tablePattern, String[] includedSchema)
+//	throws DatabaseException {
+//		Query q = new Query(Query.KIND_METADATA_KIND);
+//		System.err.println("Getting tables in BigTable");
+//		PreparedQuery result = datastore.prepare(q);
+//		List<SchemaTable> schemaTables = new ArrayList<SchemaTable>();
+//		for(Entity e : result.asIterable()){
+//			String namespace = e.getKey().getNamespace();
+//			String modelName = e.getKey().getName();
+//			System.out.println("entity: "+modelName);
+//			SchemaTable schtable = new SchemaTable(namespace, modelName);
+//			schemaTables.add(schtable);
+//		}
+//		return schemaTables.toArray(new SchemaTable[schemaTables.size()]);
+//	}
 
 
 
@@ -717,12 +717,12 @@ public class DB_BigTable extends DB_Odbms implements IDatabase{
 	}
 
 
-	@Override
-	public Map<String, String> getTableColumnComments(String tableName,
-			String schema) throws DatabaseException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public Map<String, String> getTableColumnComments(String tableName,
+//			String schema) throws DatabaseException {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	@Override
 	public String getTableComment(String tableName, String schema)
@@ -798,11 +798,11 @@ public class DB_BigTable extends DB_Odbms implements IDatabase{
 		return null;
 	}
 
-	@Override
-	public String getTableComment(String table) throws DatabaseException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public String getTableComment(String table) throws DatabaseException {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	@Override
 	public DAO insert(DAO dao, ModelMetaData meta, ModelDef model,
@@ -821,6 +821,20 @@ public class DB_BigTable extends DB_Odbms implements IDatabase{
 	public void correctDataTypes(DAO[] daoList, ModelDef model) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public boolean setPrimaryConstraint(ModelDef model)
+			throws DatabaseException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public DAO[] select(String sql, Object[] parameters)
+			throws DatabaseException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

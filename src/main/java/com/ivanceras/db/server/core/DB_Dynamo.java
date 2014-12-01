@@ -336,31 +336,31 @@ public class DB_Dynamo  implements IDatabase{
 	}
 
 
-	@Override
-	public ModelDef getModelMetaData(String schema, String tableName)
-			throws DatabaseException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public ModelDef getModelMetaData(String schema, String tableName)
+//			throws DatabaseException {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
-	@Override
-	public SchemaTable[] getTableNames(String schema, String tablePattern,
-			String[] includedSchema) throws DatabaseException {
-		List<SchemaTable> tableNames = new ArrayList<SchemaTable>();
-		String lastEvaluatedTableName = null;
-		do {
-			ListTablesRequest listTablesRequest = new ListTablesRequest()
-			//			.withLimit(10)
-			.withExclusiveStartTableName(lastEvaluatedTableName);
-			ListTablesResult result = client.listTables(listTablesRequest);
-			lastEvaluatedTableName = result.getLastEvaluatedTableName();
-			for (String name : result.getTableNames()) {
-				SchemaTable schemaTable = new SchemaTable(null, name);
-				tableNames.add(schemaTable);
-			}
-		} while (lastEvaluatedTableName != null);
-		return tableNames.toArray(new SchemaTable[tableNames.size()]);
-	}
+//	@Override
+//	public SchemaTable[] getTableNames(String schema, String tablePattern,
+//			String[] includedSchema) throws DatabaseException {
+//		List<SchemaTable> tableNames = new ArrayList<SchemaTable>();
+//		String lastEvaluatedTableName = null;
+//		do {
+//			ListTablesRequest listTablesRequest = new ListTablesRequest()
+//			//			.withLimit(10)
+//			.withExclusiveStartTableName(lastEvaluatedTableName);
+//			ListTablesResult result = client.listTables(listTablesRequest);
+//			lastEvaluatedTableName = result.getLastEvaluatedTableName();
+//			for (String name : result.getTableNames()) {
+//				SchemaTable schemaTable = new SchemaTable(null, name);
+//				tableNames.add(schemaTable);
+//			}
+//		} while (lastEvaluatedTableName != null);
+//		return tableNames.toArray(new SchemaTable[tableNames.size()]);
+//	}
 
 	@Override
 	public boolean createSchema(String schema) throws DatabaseException {
@@ -438,12 +438,12 @@ public class DB_Dynamo  implements IDatabase{
 		return false;
 	}
 
-	@Override
-	public Map<String, String> getTableColumnComments(String tableName,
-			String schema) throws DatabaseException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public Map<String, String> getTableColumnComments(String tableName,
+//			String schema) throws DatabaseException {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	@Override
 	public String getTableComment(String tableName, String schema)
@@ -529,11 +529,11 @@ public class DB_Dynamo  implements IDatabase{
 		return item;
 	}
 
-	@Override
-	public String getTableComment(String table) throws DatabaseException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public String getTableComment(String table) throws DatabaseException {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	@Override
 	public com.ivanceras.fluent.sql.SQL buildSQL(ModelMetaData meta, Query query,
@@ -573,6 +573,20 @@ public class DB_Dynamo  implements IDatabase{
 	public void correctDataTypes(DAO[] daoList, ModelDef model) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public boolean setPrimaryConstraint(ModelDef model)
+			throws DatabaseException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public DAO[] select(String sql, Object[] parameters)
+			throws DatabaseException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

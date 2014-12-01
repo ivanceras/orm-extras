@@ -22,16 +22,15 @@ import com.ivanceras.db.api.DeclaredQuery;
 import com.ivanceras.db.api.IDatabase;
 import com.ivanceras.db.api.ModelDef;
 import com.ivanceras.db.api.Query;
-import com.ivanceras.db.api.QueryBreakdown;
 import com.ivanceras.db.api.SchemaTable;
 import com.ivanceras.db.api.WindowFunction;
 import com.ivanceras.db.model.ModelMetaData;
 import com.ivanceras.db.shared.DAO;
-import com.ivanceras.db.shared.Filter;
 import com.ivanceras.db.shared.exception.DBConnectionException;
 import com.ivanceras.db.shared.exception.DatabaseException;
 import com.ivanceras.fluent.sql.Breakdown;
 import com.ivanceras.fluent.sql.SQL;
+import static com.ivanceras.db.server.core.DB_Hive.SQL_Hive.*;
 
 /**
  * Future release plan for apache hive/hadoop support
@@ -52,12 +51,12 @@ public class DB_Hive extends DB_Jdbc implements IDatabase {
 		return false;
 	}
 
-	@Override
-	public SchemaTable[] getTableNames(String schema, String tablePattern,
-			String[] includedSchema) throws DatabaseException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public SchemaTable[] getTableNames(String schema, String tablePattern,
+//			String[] includedSchema) throws DatabaseException {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	@Override
 	public long writeToBlob(byte[] buf) throws DatabaseException {
@@ -96,12 +95,12 @@ public class DB_Hive extends DB_Jdbc implements IDatabase {
 		return null;
 	}
 
-	@Override
-	public Map<String, String> getTableColumnComments(String tableName,
-			String schema) throws DatabaseException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public Map<String, String> getTableColumnComments(String tableName,
+//			String schema) throws DatabaseException {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	@Override
 	public String getTableComment(String tableName, String schema)
@@ -271,70 +270,6 @@ public class DB_Hive extends DB_Jdbc implements IDatabase {
 		return ret;
 	}
 
-//	@Override
-//	public SQL buildCreateTableStatement(ModelDef model) throws DatabaseException{
-//		String schema = model.getNamespace();
-//		schema = getDBElementName(model,schema);
-//
-//		String table = model.getTableName();
-//		if(table==null) throw new DatabaseException("No table indicated");
-//
-//		String[] columns = model.getAttributes();
-//		for(int i = 0; i < columns.length; i++){
-//			columns[i] = getDBElementName(model,columns[i]);
-//		}
-//
-//		String[] dataTypes = model.getDataTypes();
-//
-//		String autoIncrementColumn = model.getGeneratedAttribute();
-//		autoIncrementColumn = getDBElementName(model,autoIncrementColumn);
-//
-//		String[] primaryColumns = model.getPrimaryAttributes();
-//		if(primaryColumns != null){
-//			for(int i = 0; i < primaryColumns.length; i++){
-//				primaryColumns[i] = getDBElementName(model,primaryColumns[i]);
-//			}
-//		}
-//		String[] uniqueColumns = model.getUniqueAttributes();
-//		if(uniqueColumns != null){
-//			for(int i = 0; i < uniqueColumns.length; i++){
-//				uniqueColumns[i] = getDBElementName(model,uniqueColumns[i]);
-//			}
-//		}
-//		String[] hasOne = model.getHasOne();
-//		if(hasOne != null){
-//			for(int i = 0; i < hasOne.length; i++){
-//				hasOne[i] = getDBElementName(model,hasOne[i]);
-//			}
-//		}
-//
-//		StringBuffer sql = new StringBuffer();
-//		sql.append("CREATE EXTERNAL TABLE ");
-//		if(schema != null && useSchema()){
-//			sql.append(schema+".");
-//		}
-//		sql.append(table);
-//		sql.append("(\n");
-//		boolean doComma = false;
-//		for(int i = 0; i < columns.length; i++){
-//			if(doComma){sql.append(", \n");
-//			}else{ doComma = true;}
-//			sql.append("\t"+columns[i]);
-//			if(autoIncrementColumn != null && autoIncrementColumn.equals(columns[i])){
-//				sql.append(" "+getAutoIncrementColumnConstraint());
-//			}else{
-//				String dbDataType = null;
-//				dbDataType = getEquivalentDBDataType(dataTypes[i]);
-//				if(dbDataType!=null){
-//					sql.append(" "+dbDataType);
-//				}
-//			}
-//		}
-//		sql.append(")");
-//		return sql.toString();
-//	}
-
-
 
 	@Override
 	protected ForeignKey getExportedKeys(String arg0, String arg1)
@@ -359,9 +294,8 @@ public class DB_Hive extends DB_Jdbc implements IDatabase {
 	public void createExternalModel(ModelDef model, String directory, String[] partitions, String[] partitionsDataType,
 			String fieldKill, String lineKill) throws DatabaseException{
 		String table = getTable(model);
-		SQL sql = SQL.CREATE();
-		sql.keyword("EXTERNAL");
-		sql.TABLE(table);
+		SQL_Hive sql = new SQL_Hive();
+		sql.CREATE_EXTERNAL_TABLE(table);
 		String[] columns = model.getAttributes();
 		String[] dataTypes = model.getDataTypes();
 		for(int i = 0; i < columns.length; i++){
@@ -372,37 +306,41 @@ public class DB_Hive extends DB_Jdbc implements IDatabase {
 				sql.PARTITION_BY(partitions[j], partitionsDataType[j]);
 			}
 		}
+		sql.ROW_FORMAT_DELIMITED();
 		if(fieldKill != null){
-			sql.keyword("ROW_FORMAT_DELIMITED");
-			sql.keyword("FIELDS_TERMINATED_BY").keyword(fieldKill);
+			sql.FIELDS_TERMINATED_BY(fieldKill);
 		}
 		if(lineKill != null){
-			sql.keyword("ROW_FORMAT_DELIMITED");
-			sql.keyword("LINES_TERMINATED_BY").keyword(lineKill);
+			sql.LINES_TERMINATED_BY(lineKill);
 		}
 
-		sql.keyword("STORED_AS_TEXTFILE");
-		sql.keyword("LOCATION").keyword(directory);
+		sql.STORED_AS_TEXTFILE();
+		sql.LOCATION(directory);
 		executeUpdateSQL(sql);
 	}
 
 	public void addJars(String... jars) throws DatabaseException{
+		SQL_Hive sql = new SQL_Hive();
 		for(String jar : jars){
-			SQL sql = new SQL().keyword("ADD_JAR").keyword(jar);
-			Breakdown bk = sql.build();
+			sql.ADD_JAR(jar);
 			executeInsertSQL(sql, false);
 		}
 	}
 
-	public void addFile(String... files){
-
+	public void addFile(String... files) throws DatabaseException{
+		SQL_Hive sql = new SQL_Hive();
+		for(String file : files){
+			sql.ADD_FILE(file);
+			executeInsertSQL(sql, false);
+		}
 	}
 
 	@Override
 	public boolean drop(ModelDef model, boolean forced) throws DatabaseException{
 		String table = getTable(model);
 		System.out.println("table: "+table);
-		SQL sql = SQL.DROP_TABLE(table);
+		SQL sql = new SQL_Hive();
+		sql.DROP_TABLE(table);
 		return executeUpdateSQL(sql) >= 0;
 	}
 
@@ -412,14 +350,16 @@ public class DB_Hive extends DB_Jdbc implements IDatabase {
 		try {
 			Map<String, Map<String, String>> map = partition.getHash();
 			for(Entry<String, Map<String, String>> list : map.entrySet()){
-				SQL sql = SQL.ALTER_TABLE(table);
+				SQL_Hive sql = new SQL_Hive();
+				sql.ALTER();
+				sql.TABLE(table);
 				for(Entry<String, String> li : list.getValue().entrySet()){
 					String key = li.getKey();
 					String value = li.getValue();
-					sql.keyword("ADD_PARTITION").FIELD(key, value);
+					sql.ADD_PARTITION(key, value);
 				}
 				String fullPath = list.getKey();
-				sql.keyword("LOCATION").keyword(fullPath);
+				sql.LOCATION(fullPath);
 				executeUpdateSQL(sql);
 			}
 		} catch (IOException e) {
@@ -506,11 +446,11 @@ public class DB_Hive extends DB_Jdbc implements IDatabase {
 		}
 	}
 
-	@Override
-	public String getTableComment(String table) throws DatabaseException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public String getTableComment(String table) throws DatabaseException {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	@Override
 	protected Object getEquivalentJavaObject(Object record) {
@@ -528,7 +468,7 @@ public class DB_Hive extends DB_Jdbc implements IDatabase {
 	@Override
 	public void correctDataTypes(DAO[] daoList, ModelDef model) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -536,6 +476,92 @@ public class DB_Hive extends DB_Jdbc implements IDatabase {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+
+	/**
+	 * 
+	 * Manipulation of SQL statements only, pertaining to Hive, 
+	 * DB_Hive pertains to connections
+	 * @author lee
+	 *
+	 */
+	public static class SQL_Hive extends SQL{
+
+
+
+		public SQL CREATE_EXTERNAL_TABLE(String table){
+			SQL_Hive sql = new SQL_Hive();
+			sql.CREATE();
+			sql.keyword("EXTERNAL");
+			sql.TABLE(table);
+			return sql;
+		}
+
+		public SQL PARTITION(){
+			return keyword("PARTITION");
+		}
+		public SQL PARTITION_BY(String column, String dataType){
+			return PARTITION()
+					.keyword("BY")
+					.keyword(column)
+					.keyword(dataType);
+		}
+
+		public SQL ADD_PARTITION(String name, String value){
+			return ((SQL_Hive)ADD()).PARTITION();
+		}
+
+
+		public SQL ROW_FORMAT_DELIMITED(){
+			return keyword("ROW FORMAT DELIMITED");
+		}
+
+		public SQL FIELDS_TERMINATED_BY(String fieldKill){
+			return keyword("FIELDS TERMINATED BY")
+					.keyword(fieldKill);
+		}
+
+		public SQL LINES_TERMINATED_BY(String lineKill){
+			return keyword("LINES TERMINATED BY")
+					.keyword(lineKill);
+		}
+
+
+		public SQL STORED_AS(String storage){
+			return keyword("STORED AS")
+					.keyword(storage);
+		}
+
+		public SQL STORED_AS_TEXTFILE(){
+			return STORED_AS("TEXTFILE");
+		}
+
+		public SQL LOCATION(String location){
+			return keyword("LOCATION");
+		}
+
+		public SQL ADD_JAR(String jarFile){
+			return keyword("ADD JAR")
+					.keyword(jarFile);
+		}
+		public SQL ADD_FILE(String file){
+			return keyword("ADD FILE")
+					.keyword(file);
+		}
+
+
+		public SQL OVERWRITE(){
+			return keyword("OVERWRITE");
+		}
+
+		public SQL LATERAL_VIEW(){
+			return keyword("LATERAL VIEW");
+		}
+
+
+	}
+
 
 
 }
